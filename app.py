@@ -4,9 +4,7 @@ import torch
 import torch.nn.functional as F
 import pandas as pd
 
-# -------------------------------
-# Emotion Labels (GoEmotions)
-# -------------------------------
+
 EMOTIONS = [
     "admiration", "amusement", "anger", "annoyance", "approval", "caring",
     "confusion", "curiosity", "desire", "disappointment", "disapproval", "disgust",
@@ -15,9 +13,7 @@ EMOTIONS = [
     "remorse", "sadness", "surprise", "neutral"
 ]
 
-# -------------------------------
-# Load Model & Tokenizer
-# -------------------------------
+
 @st.cache_resource
 def load_model():
     try:
@@ -40,9 +36,7 @@ def load_model():
     model = model.to(device)
     return model, tokenizer, device
 
-# -------------------------------
-# Predict Emotions
-# -------------------------------
+
 def predict_emotions(text, model, tokenizer, device):
     inputs = tokenizer(text, return_tensors="pt", truncation=True, padding=True).to(device)
     with torch.no_grad():
@@ -50,9 +44,6 @@ def predict_emotions(text, model, tokenizer, device):
         probs = F.softmax(outputs.logits, dim=-1).cpu().numpy()[0]
     return probs
 
-# -------------------------------
-# Custom CSS for Styling
-# -------------------------------
 def local_css():
     st.markdown(
         """
@@ -82,9 +73,7 @@ def local_css():
         unsafe_allow_html=True
     )
 
-# -------------------------------
-# Main Streamlit App
-# -------------------------------
+
 def main():
     st.set_page_config(page_title="Emotion Detector", page_icon="😊", layout="centered")
     local_css()
